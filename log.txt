@@ -1,0 +1,13 @@
+commit 33c30409fbd6c9c1fd7b14ea78b756c3261d4780
+Author: Kenny Solorio <soloriokenny@gmail.com>
+Date:   Mon Mar 30 15:33:39 2026 -0700
+
+    Clarify project details and add WIP status
+    
+    Updated project description to specify Gemini AI and added WIP note.
+
+commit 9a64bd076b87a39b93613ec53cf1e95fcee1fa17
+Author: Kenny Solorio <soloriokenny@gmail.com>
+Date:   Sun Mar 29 15:59:03 2026 -0700
+
+    Initial commit
