@@ -1,0 +1,20 @@
+{  
+  "name": "policy-ai-app",
+  "version": "1.0.0",
+  "description": "A web app to track and analyze federal legislation and interpret it with AI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["policy", "legislation", "AI", "congress", "gemini"],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "axios": "^1.6.0",
+    "@google/generative-ai": "^0.1.3",
+    "cors": "^2.8.5"
+  }
+}
