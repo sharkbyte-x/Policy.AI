@@ -95,7 +95,9 @@ app.post('/api/interpret', async (req, res) => {
     const { billText, billTitle } = req.body;
     
     // Select Gemini model to use
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-1.5-flash" 
+    });
     
     // Create a detailed prompt for the AI
     const prompt = `You are a helpful assistant that explains federal legislation in simple terms. 
@@ -114,14 +116,16 @@ Keep the explanation accessible to the general public. Use simple language.`;
 
     // Send prompt to Gemini and wait for response
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const interpretation = response.text();
+    const interpretation = result.response.text();
     
     // Send AI's interpretation back to frontend
     res.json({ interpretation });
   } catch (error) {
     console.error('Error interpreting bill:', error.message);
-    res.status(500).json({ error: 'Failed to interpret bill. Please try again.' });
+    res.status(500).json({ 
+      error: 'Failed to interpret bill. Please try again.',
+      details: error.message
+    });
   }
 });
 
