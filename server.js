@@ -102,6 +102,27 @@ app.get('/api/bill/:congress/:billType/:billNumber', async (req, res) => {
       // If summaries endpoint fails, just continue without summary
     }
     
+    // NEW: Fetch full bill text
+    try {
+      const textResponse = await axios.get(
+        `https://api.congress.gov/v3/bill/${congress}/${billType}/${billNumber}/text?api_key=${process.env.CONGRESS_API_KEY}&format=json`
+      );
+      
+      if (textResponse.data.textVersions && textResponse.data.textVersions.length > 0) {
+        // Get the most recent text version
+        const latestText = textResponse.data.textVersions[0];
+        
+        billData.text = {
+          version: latestText.type,
+          date: latestText.date,
+          formats: latestText.formats,
+          url: latestText.url
+        };
+      }
+    } catch (textError) {
+      console.log('No text available for this bill');
+    }
+    
     res.json({ bill: billData });
   } catch (error) {
     console.error('Error fetching bill details:', error.message);

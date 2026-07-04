@@ -72,8 +72,6 @@ async function loadBills() {
 // ==========================================
 
 async function showBillDetail(bill) {
-    currentBill = bill;
-    
     billsSection.style.display = 'none';
     detailSection.style.display = 'block';
     
@@ -90,6 +88,10 @@ async function showBillDetail(bill) {
         const data = await response.json();
         const billData = data.bill;
         
+        // IMPORTANT: Store the full bill data in currentBill so we can use it in interpretBill()
+        currentBill = { ...bill, ...billData };
+        
+        // Display bill details with simplified text links
         billDetail.innerHTML = `
             <h2>${billData.number}: ${billData.title || 'No title'}</h2>
             
@@ -101,6 +103,35 @@ async function showBillDetail(bill) {
             <p><strong>Sponsors:</strong> ${billData.sponsors?.length || 0} sponsor(s)</p>
             
             <p><strong>Summary:</strong> ${billData.summary?.text || 'No summary available yet. This bill may be too recent to have a summary.'}</p>
+            
+            <!-- Full Bill Text Links -->
+            ${billData.text ? `
+            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <p><strong>📄 Full Bill Text</strong></p>
+                <p style="font-size: 0.9em; color: #666; margin: 10px 0;">
+                    View the complete bill text in your preferred format:
+                </p>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    ${billData.text.formats.map(format => 
+                      `<a href="${format.url}" target="_blank" style="
+                          display: inline-block;
+                          padding: 10px 16px;
+                          background: #667eea;
+                          color: white;
+                          text-decoration: none;
+                          border-radius: 6px;
+                          font-weight: 500;
+                          transition: background 0.3s;
+                      " onmouseover="this.style.background='#5568d3'" onmouseout="this.style.background='#667eea'">
+                        ${format.type}
+                      </a>`
+                    ).join('')}
+                </div>
+                <p style="font-size: 0.85em; color: #999; margin-top: 10px;">
+                    Opens on Congress.gov
+                </p>
+            </div>
+            ` : ''}
         `;
         
         conversationHistory = [];
@@ -127,6 +158,9 @@ async function interpretBill() {
     interpretBtn.disabled = true;
     
     try {
+        // Use summary if available, otherwise use title
+        const billContent = currentBill.summary?.text || currentBill.title || 'No text available';
+        
         const response = await fetch('/api/interpret', {
             method: 'POST',
             headers: {
@@ -134,7 +168,7 @@ async function interpretBill() {
             },
             body: JSON.stringify({
                 billTitle: currentBill.title || 'Untitled Bill',
-                billText: currentBill.title || 'No text available'
+                billText: billContent  // Now sends the actual summary!
             })
         });
         
@@ -240,7 +274,7 @@ async function sendChatMessage() {
             },
             body: JSON.stringify({
                 billTitle: currentBill.title || 'Untitled Bill',
-                billText: currentBill.title || 'No text available',
+                billText: currentBill.summary?.text || currentBill.title || 'No text available',
                 userQuestion: userMessage,
                 conversationHistory: conversationHistory
             })
@@ -299,6 +333,7 @@ function displayChatMessage(message, sender) {
 // STEP 6: Event Listeners
 // ==========================================
 
+// Bills and navigation
 refreshBtn.addEventListener('click', loadBills);
 interpretBtn.addEventListener('click', interpretBill);
 backBtn.addEventListener('click', () => {
@@ -306,6 +341,7 @@ backBtn.addEventListener('click', () => {
     detailSection.style.display = 'none';
 });
 
+// Search functionality
 searchInput.addEventListener('input', (event) => {
     searchBills(event.target.value);
 });
@@ -316,6 +352,7 @@ document.addEventListener('click', (event) => {
     }
 });
 
+// Chat functionality
 sendBtn.addEventListener('click', sendChatMessage);
 
 chatInput.addEventListener('keypress', (event) => {
