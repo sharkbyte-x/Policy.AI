@@ -12,19 +12,20 @@ body {
     /* Use system fonts for fast loading */
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     
-    background: whitesmoke;
+    background: black;
     
     /* Ensure page is at least full screen height */
     min-height: 100vh;
     
     padding: 20px;
+
 }
 
 /*HEADER STYLING*/
 
 header {
     text-align: center;
-    color: black;
+    color: white;
     margin-bottom: 40px;
 }
 
@@ -37,6 +38,14 @@ header h1 {
 header p {
     font-size: 1.2em;
     opacity: 0.9;
+}
+
+.logo{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 /* MAIN CONTENT AREA
@@ -86,7 +95,7 @@ main {
 
 #search-input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #0149aa;
     box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
 }
 
@@ -103,7 +112,7 @@ main {
     max-height: 400px;
     overflow-y: auto;
     background: white;
-    border: 2px solid #667eea;
+    border: 2px solid #0149aa;
     border-radius: 8px;
     list-style: none;
     padding: 0;
@@ -131,7 +140,7 @@ main {
 
 .result-number {
     font-weight: bold;
-    color: #667eea;
+    color: #0149aa;
     font-size: 0.95em;
     margin-bottom: 5px;
 }
@@ -174,7 +183,7 @@ main {
 
 /* Card hover effect - lifts and highlights */
 .bill-card:hover {
-    border-color: #667eea;
+    border-color: #0149aa;
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
@@ -182,7 +191,7 @@ main {
 /* Bill number styling */
 .bill-number {
     font-weight: bold;
-    color: #667eea;
+    color: #0149aa;
     font-size: 1.1em;
     margin-bottom: 8px;
 }
@@ -239,13 +248,13 @@ button:disabled {
 }
 
 #refresh-btn {
-    background: #667eea;
+    background: #fd3131;
     color: white;
     margin-bottom: 20px;
 }
 
 #refresh-btn:hover {
-    background: #5568d3;
+    background: #0149aa;
 }
 
 /* Primary button - darker purple for AI interpretation */
